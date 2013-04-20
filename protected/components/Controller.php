@@ -25,7 +25,16 @@ class Controller extends CController
 	* @var 
 	*/
 	public $cs;
+	public $app;
+	public $theme;
 	function init(){
-		$this->cs = Yii::app()->clientScript;
+		$this->app = Yii::app();
+		$this->cs = $this->app->clientScript;
+		$this->app->theme = $this->theme;
+	}
+	function dump($str){
+		print_r('<pre>');
+		print_r($str);
+		print_r('</pre>');
 	}
 }

@@ -1,0 +1,18 @@
+table:yii_content
+title:Manage Content Type
+columns:
+   id:
+      name:name
+      filter:false
+   slug:
+   name:
+      name:name
+      filter:false
+   commit: 
+      name:commit
+      filter:false
+search:
+   id:textField
+   slug:textField
+   name:textField
+   commit:textField

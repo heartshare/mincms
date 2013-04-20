@@ -1,0 +1,6 @@
+table:yii_content
+title:Manage Content Type
+columns:  
+   slug:textField
+   name:textField
+   commit:textField 
