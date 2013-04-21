@@ -11,6 +11,10 @@ columns:
    commit: 
       name:commit
       filter:false
+   fields    
+      filter:false
+      name:fields
+      type:raw  
 search:
    id:textField
    slug:textField

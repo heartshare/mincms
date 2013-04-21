@@ -52,6 +52,5 @@ $this->widget('zii.widgets.grid.CGridView', array(
 	'filter'=>$this->yiiform->model,
 	'filterPosition'=>'body',
 	'summaryCssClass'=>'label right',
-	//'htmlOptions'=>array('class'=>' table table-hover ' ),
 	'columns'=>$this->yiiform->columns,
 )); ?>

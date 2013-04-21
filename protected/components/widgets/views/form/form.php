@@ -1,5 +1,6 @@
+<?php if(property_exists($this->yiiform,'title')){ ?>
 <blockquote><h3><?php echo Yii::t('admin',$this->yiiform->title);?></h3></blockquote>	
- 
+<?php } ?>
 <div class="form">
 
 <?php $form=$this->beginWidget('CActiveForm', array(
@@ -13,7 +14,15 @@
 
 	<?php foreach ($this->yiiform->columns as $key => $value) { ?> 
 		<?php echo $form->labelEx($this->yiiform->model,$key); ?>
-		<?php echo $form->$value($this->yiiform->model,$key); ?>
+		<?php 
+		if(!is_array($value))
+			echo $form->$value($this->yiiform->model,$key);
+		else{
+			$key1 = $value['html'];
+			unset($value['html']);
+			echo $form->$key1($this->yiiform->model,$key,$value);
+		}
+		?>
 	  
 	<?php } ?>	 
 	  <p>

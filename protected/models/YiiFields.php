@@ -32,12 +32,25 @@ class YiiFields extends ActiveRecord
 			array('cid', 'numerical', 'integerOnly'=>true),
 			array('slug, name', 'length', 'max'=>20),
 			array('data_type', 'length', 'max'=>10),
+			array('slug','cunique'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
 			array('id, slug, name, data_type, cid', 'safe', 'on'=>'search'),
 		);
 	}
+	function cunique($name){
+		$cid = (int)$_GET['id'];
+		if(!$cid) 
+			$this->addError($name,Yii::t('admin','is uniqued'));
+		$model = $this->findByAttributes(array(
+			$name=>$this->$name,
+			'cid'=>$cid
+		));
 
+		if($model && $this->id!=$this->id){
+			$this->addError($name,Yii::t('admin','is uniqued'));
+		} 
+	}
 	/**
 	 * @return array relational rules.
 	 */
@@ -49,19 +62,7 @@ class YiiFields extends ActiveRecord
 		);
 	}
 
-	/**
-	 * @return array customized attribute labels (name=>label)
-	 */
-	public function attributeLabels()
-	{
-		return array(
-			'id' => 'ID',
-			'slug' => 'Slug',
-			'name' => 'Name',
-			'data_type' => 'Data Type',
-			'cid' => 'Cid',
-		);
-	}
+	
 
 	/**
 	 * Retrieves a list of models based on the current search/filter conditions.
@@ -85,7 +86,7 @@ class YiiFields extends ActiveRecord
 		$criteria->compare('slug',$this->slug,true);
 		$criteria->compare('name',$this->name,true);
 		$criteria->compare('data_type',$this->data_type,true);
-		$criteria->compare('cid',$this->cid);
+		$criteria->compare('cid',(int)$_GET['id']);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
@@ -101,5 +102,10 @@ class YiiFields extends ActiveRecord
 	public static function model($className=__CLASS__)
 	{
 		return parent::model($className);
+	}
+	function beforeSave(){
+		parent::beforeSave();
+		$this->name = trim($_POST['YiiFields']['name']);
+		return true;
 	}
 }

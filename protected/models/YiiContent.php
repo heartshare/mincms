@@ -102,4 +102,12 @@ class YiiContent extends ActiveRecord
 	{
 		return parent::model($className);
 	}
+	function getFields(){
+		return CHtml::link(Yii::t('admin','Manage Fields'),Yii::app()->createUrl('yii/fields/index',array('id'=>$this->id)));
+	}
+	function beforeSave(){
+		parent::beforeSave();
+		$this->name = trim($_POST['YiiContent']['name']);
+		return true;
+	}
 }

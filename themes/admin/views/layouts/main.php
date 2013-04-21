@@ -17,6 +17,8 @@
       table .grid_icon {width: 80px;}
       span.required{color: red;}
       .right{float: right;}
+      blockquote{margin:0;}
+      .grid-view {padding: 0;}
     </style>
   </head>
   <body>

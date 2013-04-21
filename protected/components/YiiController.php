@@ -5,6 +5,7 @@ class YiiController extends Controller
 	 
 	public $theme = 'admin';
 	public $yiiform;
+	public $layout='//layouts/column2'; 
 	function init(){
 		parent::init();
 	}
