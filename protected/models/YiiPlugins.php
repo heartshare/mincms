@@ -94,4 +94,9 @@ class YiiPlugins extends ActiveRecord
 	{
 		return parent::model($className);
 	}
+	function afterFind(){
+		parent::afterFind();
+		$this->value = unserialize($this->value);
+		
+	}
 }

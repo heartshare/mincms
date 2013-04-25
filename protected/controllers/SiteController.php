@@ -31,6 +31,11 @@ class SiteController extends Controller
 		$this->layout = 'main';
 		$this->render('index');
 	}
+	public function actionTest()
+	{
+		$this->layout = 'main'; 
+		$this->render('test');
+	}
 
 	/**
 	 * This is the action to handle external exceptions.

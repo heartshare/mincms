@@ -2,7 +2,28 @@
 
 class TypeController extends YiiController
 {
-  
+  	function actionSort($id){   
+ 		$ids = $sort = $_POST['ids']; 
+ 		arsort($sort); 
+ 		$sort = array_merge($sort,array()); 
+ 		$table = "yii_content";
+ 		$fid = $id;
+ 		$row = Yii::app()->db->createCommand()->from($table)
+ 		 		->where('id=:id', array(':id'=>$id))
+    			->queryRow();
+ 	  	
+ 		foreach($ids as $k=>$id){ 
+ 		 	Yii::app()->db->createCommand() 
+ 		 		->update($table,
+ 		 			array(
+ 		 				'sort'=>$sort[$k]
+ 		 			),'id=:id', array(':id'=>$id)
+ 		 	); 
+ 		} 
+ 	 	StructGenerate::delete_cache();//Çå³ý»º´æ
+ 		return 1;
+ 		
+ 	}
 	/**
 	 * Displays a particular model.
 	 * @param integer $id the ID of the model to be displayed
@@ -129,9 +150,11 @@ class TypeController extends YiiController
 		$model->unsetAttributes();  // clear any default values
 		if(isset($_GET['YiiContent']))
 			$model->attributes=$_GET['YiiContent'];
-		$this->yiiform->model = $model;
-		$this->yiiform->yaml = 'application.modules.yii.forms.content_type';
-		$this->render('/admin');
+ 
+	 
+		$this->render('admin',array(
+			'model'=>$model
+		));
 		 
 	}
 

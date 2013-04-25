@@ -3,8 +3,8 @@
 -- http://www.phpmyadmin.net
 --
 -- 主机: localhost
--- 生成日期: 2013 年 04 月 21 日 12:01
--- 服务器版本: 5.5.24-log
+-- 生成日期: 2013 年 04 月 24 日 11:26
+-- 服务器版本: 5.5.8-log
 -- PHP 版本: 5.3.13
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
@@ -32,6 +32,7 @@ CREATE TABLE IF NOT EXISTS `yii_content` (
   `name` varchar(100) NOT NULL COMMENT '显示名',
   `commit` text NOT NULL COMMENT '备注',
   `sort` int(11) NOT NULL COMMENT '排序',
+  `update` int(11) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
 
@@ -39,9 +40,9 @@ CREATE TABLE IF NOT EXISTS `yii_content` (
 -- 转存表中的数据 `yii_content`
 --
 
-INSERT INTO `yii_content` (`id`, `slug`, `name`, `commit`, `sort`) VALUES
-(1, 'post', 'post', 'commit', 0),
-(2, 'video', 'video', '', 0);
+INSERT INTO `yii_content` (`id`, `slug`, `name`, `commit`, `sort`, `update`) VALUES
+(1, 'post', 'post', 'commit', 0, 0),
+(2, 'video', 'video', '', 0, 0);
 
 -- --------------------------------------------------------
 
@@ -55,6 +56,7 @@ CREATE TABLE IF NOT EXISTS `yii_fields` (
   `name` varchar(20) NOT NULL COMMENT '字段标题',
   `data_type` varchar(10) NOT NULL COMMENT 'MYSQL类型',
   `cid` int(11) NOT NULL COMMENT '内容类型ID',
+  `widget` varchar(200) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
 
@@ -62,11 +64,11 @@ CREATE TABLE IF NOT EXISTS `yii_fields` (
 -- 转存表中的数据 `yii_fields`
 --
 
-INSERT INTO `yii_fields` (`id`, `slug`, `name`, `data_type`, `cid`) VALUES
-(1, 'body3', 'body3', 'varchar', 1),
-(2, 'title', 'title', 'varchar', 1),
-(3, 'body2', 'body2', 'varchar', 1),
-(4, 'body', 'body', 'text', 1);
+INSERT INTO `yii_fields` (`id`, `slug`, `name`, `data_type`, `cid`, `widget`) VALUES
+(1, 'body3', 'body3', 'varchar', 1, '0'),
+(2, 'title', 'title', 'varchar', 1, '0'),
+(3, 'body2', 'body2', 'varchar', 1, '1'),
+(4, 'body', 'body', 'text', 1, 'textField');
 
 -- --------------------------------------------------------
 
@@ -106,7 +108,17 @@ CREATE TABLE IF NOT EXISTS `yii_plugins` (
   `fid` int(11) NOT NULL COMMENT '字段',
   `value` text NOT NULL COMMENT '值',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=36 ;
+
+--
+-- 转存表中的数据 `yii_plugins`
+--
+
+INSERT INTO `yii_plugins` (`id`, `fid`, `value`) VALUES
+(10, 2, 'a:0:{}'),
+(11, 3, 'a:0:{}'),
+(33, 1, 'a:0:{}'),
+(35, 4, 'a:1:{s:8:"redactor";a:1:{s:3:"tag";s:5:"#body";}}');
 
 -- --------------------------------------------------------
 
@@ -119,7 +131,17 @@ CREATE TABLE IF NOT EXISTS `yii_validates` (
   `fid` int(11) NOT NULL COMMENT '字段',
   `value` text NOT NULL COMMENT '值',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=36 ;
+
+--
+-- 转存表中的数据 `yii_validates`
+--
+
+INSERT INTO `yii_validates` (`id`, `fid`, `value`) VALUES
+(10, 2, 'a:0:{}'),
+(11, 3, 'a:0:{}'),
+(33, 1, 'a:0:{}'),
+(35, 4, 'a:1:{s:8:"required";i:1;}');
 
 -- --------------------------------------------------------
 

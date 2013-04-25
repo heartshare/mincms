@@ -1,0 +1,14 @@
+content_type:post
+title: 
+   widget:text
+   validates: 
+       required:true
+       length:
+          min:3
+          max:5 
+   plugins:
+body: 
+   widget:text
+   validates: 
+       required:true 
+   plugins:    

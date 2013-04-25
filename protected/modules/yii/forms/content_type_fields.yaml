@@ -5,53 +5,13 @@ columns:
    data_type:
        html:dropDownList
        int:INT
-       varchar:VARCHAR
-       date:DATE
-       NUMERIC:NUMERIC
-          tinyint:TINYINT
-          smallint:SMALLINT
-          mediumint:MEDIUMINT
-          int:INT
-          bigint:BIGINT
-           
-          decimal:DECIMAL
-          float:FLOAT
-          double:DOUBLE
-          real:REAL
-           
-          bit:BIT
-          boolean:BOOLEAN
-          serial:SERIAL
-      DATE and TIME:
-         date:DATE
-         datetime:DATETIME
-         timestamp:TIMESTAMP
-         time:TIME
-         year:YEAR
-      STRING:
-         char:CHAR
-         varchar:VARCHAR
-         tinytext:TINYTEXT
-         text:TEXT
-         mediumtext:MEDIUMTEXT
-         longtext:LONGTEXT
+       varchar:VARCHAR 
+       text:TEXT
+       tinyint:TINYINT
+       bigint:BIGINT
+       float:FLOAT
+       double:DOUBLE     
+       text:TEXT
+       longtext:LONGTEXT
          
-         binary:BINARY
-         varbinary:VARBINARY
-          
-         tinyblob:TINYBLOB
-         mediumblob:MEDIUMBLOB
-         blob:BLOB
-         longblob:LONGBLOB
-          
-         enum:ENUM
-         set:SET
-      APATIAL:
-         geometry:GEOMETRY
-         point:POINT
-         linestring:LINESTRING  
-         polygon:POLYGON
-         multipoint:MELTIPOINT
-         multilinestring:MULTILINESTRING
-         multipolygon:MULTIPOLYGON
-         geometrycollection:GEOMETRYCOLLECTION 
+      

@@ -2,10 +2,11 @@
 <html>
   <head>
     <title><?php echo CHtml::encode($this->pageTitle); ?></title>
+    <meta charset="utf-8">
    	<?php
-	$this->cs->registerCssFile('misc/bootstrap/css/bootstrap.min.css');	
-	$this->cs->registerScriptFile('misc/js/jquery-1.9.1.min.js');	
-	$this->cs->registerScriptFile('misc/bootstrap/js/bootstrap.min.js');	
+	css('misc/bootstrap/css/bootstrap.min.css');	
+	core_script('jquery');
+	script('misc/bootstrap/js/bootstrap.min.js');	
 
 	
 	?> 
@@ -14,9 +15,12 @@
         padding-top: 60px;
         padding-bottom: 40px;
       }
+      span.required{color: red;}
+      .alert{margin-left: 0;padding-left: 20px;};
+      .alert li{list-style: none;}
     </style>
   </head>
-  <body>
+  <body> 
   	<div class="navbar navbar-inverse navbar-fixed-top">
       <div class="navbar-inner">
         <div class="container">
@@ -28,8 +32,8 @@
           <a class="brand" href="#">Yii Custom System</a>
           <div class="nav-collapse collapse">
             <ul class="nav">
-              <li class="active"><a href="#">Home</a></li> 
-               
+              <li><a href="<?php echo url('site/index');?>">Home</a></li> 
+              <li><a href="<?php echo url('site/test');?>">Test</a></li>  
             </ul>
              
           </div><!--/.nav-collapse -->

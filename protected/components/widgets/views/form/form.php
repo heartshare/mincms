@@ -26,7 +26,7 @@
 	  
 	<?php } ?>	 
 	  <p>
-		<?php echo CHtml::submitButton($this->yiiform->model->isNewRecord ? Yii::t('admin','Create') : Yii::t('admin','Save'),array('class'=>'btn')); ?>
+		<?php echo CHtml::submitButton($this->yiiform->model->isNewRecord ? Yii::t('admin','Create') : Yii::t('admin','Update'),array('class'=>'btn  btn-primary')); ?>
 	  </p>
 
 <?php $this->endWidget(); ?>

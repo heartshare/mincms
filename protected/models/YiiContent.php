@@ -35,7 +35,16 @@ class YiiContent extends ActiveRecord
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
 			array('id, slug, name, commit, sort', 'safe', 'on'=>'search'),
+			array('slug','check'),
 		);
+	}
+	
+	function check($name){
+		$ext = strtolower(substr($this->$name,0,4));
+		if(Yii::app()->params['debug']===true) return true;
+		if($ext=='yii_' || $ext=='core'){
+			$this->addError($name,Yii::t('admin','Content Type is not allow'));	
+		}
 	}
 
 	/**
@@ -86,7 +95,7 @@ class YiiContent extends ActiveRecord
 		$criteria->compare('name',$this->name,true);
 		$criteria->compare('commit',$this->commit,true);
 		$criteria->compare('sort',$this->sort);
-
+		$criteria->order = "sort desc,id asc";
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
 		));
@@ -103,11 +112,20 @@ class YiiContent extends ActiveRecord
 		return parent::model($className);
 	}
 	function getFields(){
-		return CHtml::link(Yii::t('admin','Manage Fields'),Yii::app()->createUrl('yii/fields/index',array('id'=>$this->id)));
+		return CHtml::link('<i class="icon-wrench"></i>',Yii::app()->createUrl('yii/fields/index',array('id'=>$this->id)));
 	}
 	function beforeSave(){
 		parent::beforeSave();
 		$this->name = trim($_POST['YiiContent']['name']);
+		$this->slug = strtolower(trim($_POST['YiiContent']['slug']));
 		return true;
+	}
+	function afterSave(){
+		parent::afterSave(); 
+		StructGenerate::delete_cache();//Çå³ý»º´æ
+		return true;
+	}
+	function getslug_hidden(){ 
+		return '<i class="drag"></i>'.CHtml::hiddenField('ids[]',$this->id).$this->slug;
 	}
 }

@@ -12,6 +12,14 @@
  */
 class YiiFields extends ActiveRecord
 {
+	public $groups;
+	public $validates;
+	public $values;
+	public $plugins;
+	function init(){
+		parent::init();
+		Yii::import('application.vendor.spyc',true);
+	}
 	/**
 	 * @return string the associated database table name
 	 */
@@ -42,11 +50,22 @@ class YiiFields extends ActiveRecord
 		$cid = (int)$_GET['id'];
 		if(!$cid) 
 			$this->addError($name,Yii::t('admin','is uniqued'));
+		if(in_array(strtolower($this->$name),array(
+			'id',
+			'display',
+			'sort',
+			'created',
+			'updated',
+			'unique',
+			'uid'
+			))){
+			$this->addError($name,Yii::t('admin','Content Field is used in node'));
+		} 
 		$model = $this->findByAttributes(array(
 			$name=>$this->$name,
 			'cid'=>$cid
 		));
-
+		
 		if($model && $this->id!=$this->id){
 			$this->addError($name,Yii::t('admin','is uniqued'));
 		} 
@@ -59,9 +78,12 @@ class YiiFields extends ActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
+			'vali'=>array(self::HAS_ONE, 'YiiValidates', 'fid'),
+			'plug'=>array(self::HAS_ONE, 'YiiPlugins', 'fid'),
+			'type'=>array(self::BELONGS_TO, 'YiiContent', 'cid'),
 		);
 	}
-
+	
 	
 
 	/**
@@ -87,9 +109,12 @@ class YiiFields extends ActiveRecord
 		$criteria->compare('name',$this->name,true);
 		$criteria->compare('data_type',$this->data_type,true);
 		$criteria->compare('cid',(int)$_GET['id']);
-
+		$criteria->order = "sort desc,id asc";
 		return new CActiveDataProvider($this, array(
-			'criteria'=>$criteria,
+			'criteria'=>$criteria, 
+		    'pagination'=>array(
+		        'pageSize'=>20000,
+		    ),
 		));
 	}
 
@@ -103,9 +128,53 @@ class YiiFields extends ActiveRecord
 	{
 		return parent::model($className);
 	}
-	function beforeSave(){
-		parent::beforeSave();
-		$this->name = trim($_POST['YiiFields']['name']);
+	function afterFind(){
+		parent::afterFind();
+		$this->validates = Spyc::YAMLDump($this->vali->value);
+		$this->plugins = Spyc::YAMLDump($this->plug->value);
+	}
+	function afterSave(){
+		parent::afterSave(); 
+		StructGenerate::delete_cache();//Çå³ı»º´æ
+		StructGenerate::delete_cache($this->type->slug);//Çå³ı»º´æ 
 		return true;
+	}
+	function beforeSave(){
+		parent::beforeSave(); 
+		$this->name = trim($_POST['YiiFields']['name']);
+		$this->slug = strtolower(trim($_POST['YiiFields']['slug']));
+		$this->widget = trim($_POST['widget']); 
+		$this->search = trim($_POST['YiiFields']['search']);
+		$this->list = trim($_POST['YiiFields']['list']);
+		$this->length = trim($_POST['YiiFields']['length']);
+		$validate = $_POST['validate'];
+		$plugin = $_POST['plugin'];
+		if(trim($validate)){
+			$validate = Spyc::YAMLLoadString($validate);
+			YiiValidates::model()->deleteAllByAttributes(array(
+				'fid'=>$this->id
+			));
+			$model = new YiiValidates;
+			$model->fid = $this->id;
+			$model->value = serialize($validate);
+			$model->save();
+			 
+		}
+		if(trim($plugin)){
+			$plugin = Spyc::YAMLLoadString($plugin);
+			YiiPlugins::model()->deleteAllByAttributes(array(
+				'fid'=>$this->id
+			));
+			$model = new YiiPlugins;
+			$model->fid = $this->id;
+			$model->value = serialize($plugin);
+			$model->save();  
+		}
+	 
+		return true;
+	}
+	
+	function getslug_hidden(){
+		return '<i class="drag"></i>'.CHtml::hiddenField('ids[]',$this->id).$this->slug;
 	}
 }

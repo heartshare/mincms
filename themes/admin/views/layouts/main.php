@@ -2,12 +2,25 @@
 <html>
   <head>
     <title><?php echo CHtml::encode($this->pageTitle); ?></title>
+    <meta charset="utf-8">
 <?php
-	$this->cs->registerCssFile('misc/bootstrap/css/bootstrap.min.css');	
-	$this->cs->registerCoreScript('jquery');	
-	$this->cs->registerScriptFile('misc/bootstrap/js/bootstrap.min.js');	 
+	css('misc/bootstrap/css/bootstrap.min.css');	
+	core_script('jquery');	
+	script('misc/bootstrap/js/bootstrap.min.js');	
+	//css('misc/KickStart/css/kickstart.css ');	
+	//script('misc/KickStart/js/kickstart.js');	
+	//css("misc/jquery-ui/css/ui-lightness/jquery-ui-1.10.2.custom.min.css");
 ?> 
 	<style type="text/css">
+	  .drag{ 
+		background:url("<?php echo base_url();?>/misc/img/drag.png") no-repeat;
+	  	width: 50px;
+		height: 50px;
+		position: relative;
+		padding-right: 20px;
+	  }	
+	  form label{display:block;}
+	  .breadcrumb{margin:0;}
       body {
         padding-top: 60px;
         padding-bottom: 40px;
@@ -19,9 +32,12 @@
       .right{float: right;}
       blockquote{margin:0;}
       .grid-view {padding: 0;}
+      .alert{margin-left: 0;padding-left: 20px;};
+      .alert li{list-style: none;}
+      li{list-style:none;}
     </style>
   </head>
-  <body>
+  <body> 
   	<div class="navbar navbar-inverse navbar-fixed-top">
       <div class="navbar-inner">
         <div class="container">
@@ -33,19 +49,28 @@
           <a class="brand" href="#">Yii Custom System Admin</a>
           <div class="nav-collapse collapse">
             <ul class="nav">
-              <li class="active"><a href="#">Home</a></li>
+              <li><a href="#">Home</a></li>
               <li><a href="#about">About</a></li>
-              <li><a href="#contact">Contact</a></li>
               <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><?php echo Yii::t('admin','Fields'); ?><b class="caret"></b></a>
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><?php echo t('admin','Content'); ?>
+        		<b class="caret"></b></a>
                 <ul class="dropdown-menu">
-                  <li><a href="<?php echo $this->app->createUrl('yii/type/admin'); ?>"><?php echo Yii::t('admin','Content Type'); ?></a></li>
-                  <li><a href="#"><?php echo Yii::t('admin','Fields'); ?></a></li>
-                  <li><a href="#">Something else here</a></li>
+        		  <?php $content_type = StructGenerate::content_type();
+        			foreach($content_type as $v){?>
+                  <li><a href="<?php echo url('yii/grid/admin',array('name'=>$v['slug'])); ?>">
+        			<?php echo t('admin',$v['name']); ?></a></li> 
+                  <?php }?>
+                </ul>
+              </li>
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><?php echo t('admin','System'); ?><b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                  <li><a href="<?php echo url('yii/type/admin'); ?>"><?php echo t('admin','Content Type'); ?></a></li>
+                
                   <li class="divider"></li>
-                  <li class="nav-header">Nav header</li>
-                  <li><a href="#">Separated link</a></li>
-                  <li><a href="#">One more separated link</a></li>
+                  <li class="nav-header"><?php echo t('admin','Modules'); ?></li>
+                  <li><a href="<?php echo url('i18n/default/index'); ?>"><?php echo t('admin','I18N'); ?></a></li>
+                   
                 </ul>
               </li>
             </ul>
@@ -57,6 +82,15 @@
 
     
     <div class="container">
+      <?php 
+        //Êä³öflash message
+       $flash = array('success','error');
+       foreach($flash as $v){
+       	   if(has_flash($v)){
+       ?>
+       	<div class="alert alert-<?php echo $v;?>"><?php echo flash($v);?></div>
+       <?php }}?>
+      
       <?php if(isset($this->breadcrumbs)):?>
         <?php $this->widget('zii.widgets.CBreadcrumbs', array(
           'links'=>$this->breadcrumbs,
@@ -69,6 +103,9 @@
   		<?php echo $content; ?>
       </div> 
 	</div> 
+<?php
+$this->plugin('select2');
+?>
   </body>
 </html>
 		

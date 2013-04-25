@@ -3,11 +3,10 @@
 <div class="span10">
 	<?php echo $content; ?> 
 </div>
-<div class="span2">
-	 
+<div class="span2"> 
 	<?php
 		$this->beginWidget('zii.widgets.CPortlet', array(
-			'title'=>'Operations',
+			'title'=>Yii::t('admin','Operations'),
 		));
 		$this->widget('zii.widgets.CMenu', array(
 			'items'=>$this->menu,

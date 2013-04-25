@@ -1,9 +1,6 @@
 table:yii_content
 title:Manage Content Type
-columns:
-   id:
-      name:name
-      filter:false
+columns: 
    slug:
    name:
       name:name
@@ -15,8 +12,4 @@ columns:
       filter:false
       name:fields
       type:raw  
-search:
-   id:textField
-   slug:textField
-   name:textField
-   commit:textField
+ 

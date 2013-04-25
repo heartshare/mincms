@@ -3,4 +3,4 @@ title:Manage Content Type
 columns:  
    slug:textField
    name:textField
-   commit:textField 
+   commit:textArea

@@ -23,18 +23,34 @@ class Controller extends CController
 	
 	/**
 	* @var 
-	*/
-	public $cs;
-	public $app;
+	*/ 
 	public $theme;
-	function init(){
-		$this->app = Yii::app();
-		$this->cs = $this->app->clientScript;
-		$this->app->theme = $this->theme;
+	function init(){  
+		Yii::app()->theme = $this->theme;
 	}
-	function dump($str){
-		print_r('<pre>');
-		print_r($str);
-		print_r('</pre>');
+	function widgets($name,$params=null){
+		return $this->plugin($name,$params,'init','widgets');
+	}
+	/**
+	* Ç°¶ËÖØÓÃwidget
+	*/
+	function webcontrol($name,$params=null){
+		Yii::import("application.webcontrol.{$name}",true); 
+		if(!$params) $params = array();
+		$cls = ucfirst('webcontrol')."_".ucfirst($name);  
+		$this->widget("application.webcontrol.$cls",$params);
+	}
+	
+	function plugin($name,$params=null,$file='init',$type='plugins'){
+		Yii::import("application.{$type}.{$name}.$file",true); 
+		$cls = ucfirst($type)."_".ucfirst($name)."_".ucfirst($file);  
+	 	if(!$params) $params = array();
+		$this->widget("application.{$type}.{$name}.$cls",$params);
+	}
+	function view($view,$data=null){
+		if(is_ajax())
+			$this->renderPartial($view,$data);
+		else
+			$this->render($view,$data);
 	}
 }

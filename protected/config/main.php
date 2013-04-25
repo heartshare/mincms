@@ -1,18 +1,14 @@
 <?php
-function d($arr){
-	print_r('<pre>');
-	print_r($arr);
-	print_r('</pre>');
-}
 // uncomment the following to define a path alias
 // Yii::setPathOfAlias('local','path/to/local-folder');
 
 // This is the main Web application configuration. Any writable
 // CWebApplication properties can be configured here.
-return array(
+
+$array = array(
 	'basePath'=>dirname(__FILE__).DIRECTORY_SEPARATOR.'..',
 	'name'=>'My Web Application',
-
+	'timeZone'=>'Asia/Chongqing',
 	// preloading 'log' component
 	'preload'=>array('log'),
 	'runtimePath'=>dirname(__FILE__).'/../../temp',
@@ -20,11 +16,12 @@ return array(
 	'import'=>array(
 		'application.models.*',
 		'application.components.*',
+		'application.helpers.*',
 	),
 
 	'modules'=>array(
 		// uncomment the following to enable the Gii tool
-		'yii',
+		'yii','i18n',
 		'gii'=>array(
 			'class'=>'system.gii.GiiModule',
 			'password'=>'admin',
@@ -36,6 +33,7 @@ return array(
 
 	// application components
 	'components'=>array(
+		
 		'user'=>array(
 			// enable cookie-based authentication
 			'allowAutoLogin'=>true,
@@ -56,13 +54,7 @@ return array(
 		 
 		// uncomment the following to use a MySQL database
 		
-		'db'=>array(
-			'connectionString' => 'mysql:host=localhost;dbname=yii',
-			'emulatePrepare' => true,
-			'username' => 'test',
-			'password' => 'test',
-			'charset' => 'utf8',
-		),
+		
 		'clientScript' => array(
 			   'class' => 'ext.minify.EClientScript',
 			   'combineScriptFiles' => !YII_DEBUG, // By default this is set to true, set this to true if you'd like to combine the script files
@@ -70,10 +62,10 @@ return array(
 			   'optimizeScriptFiles' => !YII_DEBUG, // @since: 1.1
 			   'optimizeCssFiles' => !YII_DEBUG, // @since: 1.1
 		 ),
-		'errorHandler'=>array(
+		/*'errorHandler'=>array(
 			// use 'site/error' action to display errors
 			'errorAction'=>'site/error',
-		),
+		),*/
 		'log'=>array(
 			'class'=>'CLogRouter',
 			'routes'=>array( 
@@ -91,6 +83,11 @@ return array(
 	// using Yii::app()->params['paramName']
 	'params'=>array(
 		// this is used in contact page
-		'adminEmail'=>'webmaster@example.com',
+		'debug'=>false,
 	),
 );
+$database = include_once dirname(__FILE__).'/database.php';		
+$array['components'] = array_merge($database,$array['components']);
+$cache = include_once dirname(__FILE__).'/cache.php';		
+$array['components'] = array_merge($cache,$array['components']);
+return $array;
