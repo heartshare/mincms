@@ -25,8 +25,21 @@ class Controller extends CController
 	* @var 
 	*/ 
 	public $theme;
+	public $hash;
+	private $securityManager;
 	function init(){  
 		Yii::app()->theme = $this->theme;
+		if(!$this->hash) $this->hash = Yii::app()->params['hash'];
+		$this->securityManager = Yii::app()->securityManager;
+		$this->securityManager->encryptionKey = $this->hash;
+	}
+	function encode($value,$key=null){ 
+		if($key) $this->securityManager->encryptionKey = $this->hash;
+		return base64_encode($this->securityManager->encrypt($value));
+	}
+	function decode($value,$key=null){ 
+		if($key) $this->securityManager->encryptionKey = $this->hash;
+		return $this->securityManager->decrypt(base64_decode($value));
 	}
 	function widgets($name,$params=null){
 		return $this->plugin($name,$params,'init','widgets');
