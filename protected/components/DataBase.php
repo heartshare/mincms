@@ -74,8 +74,9 @@ class DataBase{
 			}
 		
 		}	
+		
 		if($order) $sql .= " ORDER BY	 ".substr($order,0,-1);  
-	 	 
+	 	if($condition['limit']) $sql .= " LIMIT	 ".$condition['limit'];   
  		$query =  Yii::app()->db->createCommand($sql); 
  		unset($row);
  		$row['query'] = $query;
@@ -125,12 +126,14 @@ class DataBase{
  		//整理数据
  		unset($row);
  		$row['id'] = $nid;
- 		foreach($out as $f=>$v){
- 			if(count($v)==1) 
- 				$row[$f] = Node::array_first($v);
- 			else
- 				$row[$f] = $v;
- 		} 
+ 		if($out){
+	 		foreach($out as $f=>$v){
+	 			if(count($v)==1) 
+	 				$row[$f] = Node::array_first($v);
+	 			else
+	 				$row[$f] = $v;
+	 		} 
+ 		}
  	  	return $row;
  	 
  	}

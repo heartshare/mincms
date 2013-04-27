@@ -12,4 +12,7 @@ columns:
       filter:false
       name:fields
       type:raw  
+   display:
+      name:display_label
+      type:raw
  

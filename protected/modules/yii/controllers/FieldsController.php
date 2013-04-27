@@ -1,5 +1,12 @@
 <?php
-
+/**
+ * å­—æ®µç®¡ç†
+ *
+ * @author Sun Kang <68103403@qq.com>
+ * @link http://www.mincms.com/
+ * @copyright 2013-2013 MinCMS Software
+ * @license http://www.mincms.com/license/
+ */
 class FieldsController extends YiiController
 {
 	public $layout='//layouts/column1';
@@ -22,7 +29,7 @@ class FieldsController extends YiiController
  		 	); 
  		} 
  	 
- 	 	StructGenerate::delete_cache($name);//Çå³ý»º´æ
+ 	 	StructGenerate::delete_cache($name);//æ¸…é™¤ç¼“å­˜
  		return 1;
  		
  	}

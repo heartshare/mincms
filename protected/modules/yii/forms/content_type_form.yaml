@@ -3,4 +3,9 @@ title:Manage Content Type
 columns:  
    slug:textField
    name:textField
+   display:
+          html:dropDownList  
+          1:'Yes'
+          2:'No'
    commit:textArea
+  

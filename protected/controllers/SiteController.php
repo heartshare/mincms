@@ -27,7 +27,8 @@ class SiteController extends Controller
 	 * when an action is not explicitly requested by users.
 	 */
 	public function actionIndex()
-	{
+	{ 
+		echo Crypter::encrypt('acs');exit;
 		$this->layout = 'main';
 		$this->render('index');
 	}

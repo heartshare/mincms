@@ -1,7 +1,20 @@
 <?php
-
+/**
+ * 内容类型管理
+ *
+ * @author Sun Kang <68103403@qq.com>
+ * @link http://www.mincms.com/
+ * @copyright 2013-2013 MinCMS Software
+ * @license http://www.mincms.com/license/
+ */
 class TypeController extends YiiController
 {
+	/**
+	* 内容类型生成代码
+	*/
+	function actionCode($name){
+		StructGenerate::code($name);
+	}
   	function actionSort($id){   
  		$ids = $sort = $_POST['ids']; 
  		arsort($sort); 
@@ -20,7 +33,7 @@ class TypeController extends YiiController
  		 			),'id=:id', array(':id'=>$id)
  		 	); 
  		} 
- 	 	StructGenerate::delete_cache();//�������
+ 	 	StructGenerate::delete_cache();//清除缓存
  		return 1;
  		
  	}

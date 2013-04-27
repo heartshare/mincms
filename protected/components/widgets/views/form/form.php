@@ -1,4 +1,18 @@
-<?php if(property_exists($this->yiiform,'title')){ ?>
+<?php 
+/** yaml 文件form格式
+table:yii_content
+title:Manage Content Type
+table:yii_fields
+columns:  
+   slug:textField
+   name:textField
+   data_type:
+       html:dropDownList
+       int:INT
+       varchar:VARCHAR  
+      
+*/	
+if(property_exists($this->yiiform,'title')){ ?>
 <blockquote><h3><?php echo Yii::t('admin',$this->yiiform->title);?></h3></blockquote>	
 <?php } ?>
 <div class="form">
@@ -19,7 +33,7 @@
 			echo $form->$value($this->yiiform->model,$key);
 		else{
 			$key1 = $value['html'];
-			unset($value['html']);
+			unset($value['html']); 
 			echo $form->$key1($this->yiiform->model,$key,$value);
 		}
 		?>

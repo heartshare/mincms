@@ -94,6 +94,11 @@ class YiiValidates extends ActiveRecord
 	{
 		return parent::model($className);
 	}
+	function beforeSave(){
+		parent::beforeSave();
+		$this->value = serialize($this->value);
+		return true;
+	}
 	function afterFind(){
 		parent::afterFind();
 		$this->value = unserialize($this->value);

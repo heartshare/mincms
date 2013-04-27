@@ -1,3 +1,24 @@
+<?php
+/**
+YMAL格式文件 list的格式
+table:yii_content
+title:Manage Content Type
+columns: 
+   slug:
+   name:
+      name:name
+      filter:false
+   commit: 
+      name:commit
+      filter:false
+   fields    
+      filter:false
+      name:fields
+      type:raw  
+ 
+
+*/	
+?>
 <blockquote><h3><?php echo Yii::t('admin',$this->yiiform->title);?></h3></blockquote>	
 <?php 
 $this->yiiform->columns[] = array(

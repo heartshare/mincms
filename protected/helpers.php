@@ -166,27 +166,52 @@ function new_replace($body,$replace=array()){
 	}
  	return $body;
 }
-function encode($value,$key='yii'){
-	$crypt = Yii::app()->securityManager;
-	$crypt->encryptionKey($key);
-	$crypt->encrypt($value);
-}
-function decode($value,$key='yii'){
-	$crypt = Yii::app()->securityManager;
-	$crypt->encryptionKey($key);
-	$crypt->decrypt($value);
-}
+
+/**
+* 查寻数据
+*/
 function find($name,$condition){
-	return Node::find($name,$condition);
+	if(is_array($condition))
+		$condition['limit'] = 1;
+	// true 返回完整的node,为空或false 仅返回node id
+	$data =  Node::find($name,$condition,true);
+	return (object)$data;
 }
+/**
+* 查寻所有数据
+*/
 function find_all($name,$condition=null){
+	$nodes = find_all_nid($name,$condition);
+ 	if($nodes){
+ 		foreach($nodes as $n){
+ 			$node[] = find($name,$n['id']);  
+ 		}
+ 	}
+ 	return $node;
+}
+/**
+* 查寻所有数据
+*/
+function find_all_nid($name,$condition=null){
 	return Node::find_all($name,$condition);
 }
+/**
+* 查寻数据并分页
+*/
 function pager($name,$condition=null,$pagesize=10){
 	return Node::find_all($name,$condition,$pagesize);
 }
+/**
+* 查寻单条数据
+*/
 function node($name,$id){
 	return Node::load($name,$id);
+}
+/**
+* 保存数据
+*/
+function save($name,$data,$nid=null){
+	Node::save_data($name,$data,$nid);
 }
 function load_file($name){
 	$name = str_replace('.','/',$name);

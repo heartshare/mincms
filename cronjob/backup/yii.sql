@@ -16,167 +16,6 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `post_int`
---
-
-DROP TABLE IF EXISTS `post_int`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `post_int` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `nid` int(11) NOT NULL,
-  `fid` int(11) NOT NULL,
-  `value` int(11) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `post_int`
---
-
-LOCK TABLES `post_int` WRITE;
-/*!40000 ALTER TABLE `post_int` DISABLE KEYS */;
-INSERT INTO `post_int` VALUES (1,2,7,1366913880),(2,1,7,1366883700);
-/*!40000 ALTER TABLE `post_int` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `post_nid`
---
-
-DROP TABLE IF EXISTS `post_nid`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `post_nid` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `display` tinyint(1) NOT NULL DEFAULT '1',
-  `sort` int(11) NOT NULL,
-  `created` int(11) NOT NULL,
-  `updated` int(11) NOT NULL,
-  `unique` varchar(200) NOT NULL,
-  `uid` int(11) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `post_nid`
---
-
-LOCK TABLES `post_nid` WRITE;
-/*!40000 ALTER TABLE `post_nid` DISABLE KEYS */;
-INSERT INTO `post_nid` VALUES (1,0,1,1366882085,1366883707,'',0),(2,0,2,1366882396,1366886058,'',0);
-/*!40000 ALTER TABLE `post_nid` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `post_text`
---
-
-DROP TABLE IF EXISTS `post_text`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `post_text` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `nid` int(11) NOT NULL,
-  `fid` int(11) NOT NULL,
-  `value` text NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `post_text`
---
-
-LOCK TABLES `post_text` WRITE;
-/*!40000 ALTER TABLE `post_text` DISABLE KEYS */;
-/*!40000 ALTER TABLE `post_text` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `post_varchar`
---
-
-DROP TABLE IF EXISTS `post_varchar`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `post_varchar` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `nid` int(11) NOT NULL,
-  `fid` int(11) NOT NULL,
-  `value` varchar(255) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `post_varchar`
---
-
-LOCK TABLES `post_varchar` WRITE;
-/*!40000 ALTER TABLE `post_varchar` DISABLE KEYS */;
-INSERT INTO `post_varchar` VALUES (1,1,2,'标题'),(2,1,4,'<p>内容</p>'),(3,2,2,'看看'),(4,2,4,'<p>不错</p>'),(5,2,3,'23233'),(6,2,1,'232323');
-/*!40000 ALTER TABLE `post_varchar` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `video_nid`
---
-
-DROP TABLE IF EXISTS `video_nid`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `video_nid` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `display` tinyint(1) NOT NULL DEFAULT '1',
-  `sort` int(11) NOT NULL,
-  `created` int(11) NOT NULL,
-  `updated` int(11) NOT NULL,
-  `unique` varchar(200) NOT NULL,
-  `uid` int(11) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `video_nid`
---
-
-LOCK TABLES `video_nid` WRITE;
-/*!40000 ALTER TABLE `video_nid` DISABLE KEYS */;
-INSERT INTO `video_nid` VALUES (1,1,0,1366882074,1366882074,'',0);
-/*!40000 ALTER TABLE `video_nid` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `video_varchar`
---
-
-DROP TABLE IF EXISTS `video_varchar`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `video_varchar` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `nid` int(11) NOT NULL,
-  `fid` int(11) NOT NULL,
-  `value` varchar(255) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `video_varchar`
---
-
-LOCK TABLES `video_varchar` WRITE;
-/*!40000 ALTER TABLE `video_varchar` DISABLE KEYS */;
-INSERT INTO `video_varchar` VALUES (1,1,5,'2'),(2,1,6,'<p>2</p>');
-/*!40000 ALTER TABLE `video_varchar` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `yii_content`
 --
 
@@ -190,8 +29,9 @@ CREATE TABLE `yii_content` (
   `commit` text NOT NULL COMMENT '备注',
   `sort` int(11) NOT NULL COMMENT '排序',
   `update` int(11) NOT NULL,
+  `display` tinyint(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -200,7 +40,7 @@ CREATE TABLE `yii_content` (
 
 LOCK TABLES `yii_content` WRITE;
 /*!40000 ALTER TABLE `yii_content` DISABLE KEYS */;
-INSERT INTO `yii_content` VALUES (1,'post','post','commit',2,0),(2,'video','video','',1,0);
+INSERT INTO `yii_content` VALUES (1,'zii_user','系统用户','',0,0,2),(2,'zii_user_group','用户绑定到用户组','',0,0,2),(3,'zii_file','文件','',0,0,2),(4,'zii_group','用户组','',0,0,2),(5,'zii_config','配置','',0,0,1),(6,'zii_module','系统模块','',0,0,2);
 /*!40000 ALTER TABLE `yii_content` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -217,7 +57,7 @@ CREATE TABLE `yii_field_group` (
   `gid` int(11) NOT NULL COMMENT '组ID',
   `sort` int(11) NOT NULL COMMENT '排序',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -248,7 +88,7 @@ CREATE TABLE `yii_fields` (
   `length` int(11) NOT NULL COMMENT '字段长度',
   `sort` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -257,7 +97,7 @@ CREATE TABLE `yii_fields` (
 
 LOCK TABLES `yii_fields` WRITE;
 /*!40000 ALTER TABLE `yii_fields` DISABLE KEYS */;
-INSERT INTO `yii_fields` VALUES (1,'body3','body3','varchar',1,'text',0,0,0,3),(2,'title','title','varchar',1,'text',1,0,0,4),(3,'body2','body2','varchar',1,'text',0,0,0,1),(4,'body','body','varchar',1,'text',1,0,200,2),(5,'title','标题','varchar',2,'input',1,0,0,6),(6,'body','内容','varchar',2,'text',1,0,200,5),(7,'time','时间','int',1,'input',1,0,0,0);
+INSERT INTO `yii_fields` VALUES (1,'email','用户名','varchar',1,'input',1,1,0,0),(2,'password','密码','varchar',1,'password',0,0,64,0),(3,'name','名字','varchar',1,'input',1,0,50,0),(4,'path','路径','varchar',3,'input',1,0,0,0),(5,'ext','后缀','varchar',3,'input',1,1,10,0),(6,'size','文件大小','int',3,'input',1,0,0,0),(7,'uniqid','MD5','varchar',3,'input',0,0,0,0),(8,'type','类型','varchar',3,'input',0,0,50,0),(9,'name','组名','varchar',4,'input',1,1,50,11),(10,'access','权限','text',4,'text',0,0,0,9),(11,'slug','组标识','varchar',4,'input',1,0,50,10),(12,'slug','标识','varchar',5,'input',1,1,20,0),(13,'value','值','text',5,'text',1,0,0,0),(14,'slug','标识','varchar',6,'input',1,0,50,0);
 /*!40000 ALTER TABLE `yii_fields` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -273,7 +113,7 @@ CREATE TABLE `yii_groups` (
   `name` varchar(100) NOT NULL COMMENT '名称',
   `cid` int(11) NOT NULL COMMENT '内容类型ID',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -297,7 +137,7 @@ CREATE TABLE `yii_plugins` (
   `fid` int(11) NOT NULL COMMENT '字段',
   `value` text NOT NULL COMMENT '值',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=63 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -306,7 +146,7 @@ CREATE TABLE `yii_plugins` (
 
 LOCK TABLES `yii_plugins` WRITE;
 /*!40000 ALTER TABLE `yii_plugins` DISABLE KEYS */;
-INSERT INTO `yii_plugins` VALUES (11,3,'a:0:{}'),(33,1,'a:0:{}'),(40,2,'a:0:{}'),(57,5,'a:0:{}'),(60,6,'a:1:{s:8:\"redactor\";a:1:{s:3:\"tag\";s:2:\"id\";}}'),(61,4,'a:1:{s:8:\"redactor\";a:1:{s:3:\"tag\";s:5:\"#body\";}}'),(62,7,'a:1:{s:10:\"datepicker\";a:1:{s:3:\"tag\";s:2:\"id\";}}');
+INSERT INTO `yii_plugins` VALUES (1,2,'a:0:{}'),(2,1,'a:0:{}'),(4,10,'a:0:{}');
 /*!40000 ALTER TABLE `yii_plugins` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -322,7 +162,7 @@ CREATE TABLE `yii_validates` (
   `fid` int(11) NOT NULL COMMENT '字段',
   `value` text NOT NULL COMMENT '值',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=63 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=20 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -331,7 +171,7 @@ CREATE TABLE `yii_validates` (
 
 LOCK TABLES `yii_validates` WRITE;
 /*!40000 ALTER TABLE `yii_validates` DISABLE KEYS */;
-INSERT INTO `yii_validates` VALUES (11,3,'a:0:{}'),(33,1,'a:0:{}'),(40,2,'a:0:{}'),(57,5,'a:1:{s:8:\"required\";i:1;}'),(60,6,'a:1:{s:8:\"required\";i:1;}'),(61,4,'a:1:{s:8:\"required\";i:1;}'),(62,7,'a:0:{}');
+INSERT INTO `yii_validates` VALUES (3,2,'a:1:{s:8:\"required\";i:1;}'),(4,1,'a:1:{s:8:\"required\";i:1;}'),(5,3,'a:1:{s:8:\"required\";i:1;}'),(6,4,'a:1:{s:8:\"required\";i:1;}'),(7,5,'a:1:{s:8:\"required\";i:1;}'),(8,6,'a:1:{s:8:\"required\";i:1;}'),(9,7,'a:1:{s:8:\"required\";i:1;}'),(10,8,'a:1:{s:8:\"required\";i:1;}'),(11,9,'a:1:{s:8:\"required\";i:1;}'),(13,11,'a:2:{s:8:\"required\";i:1;s:6:\"unique\";i:1;}'),(14,12,'a:1:{s:8:\"required\";i:1;}'),(18,13,'a:1:{s:8:\"required\";i:1;}'),(19,14,'a:1:{s:8:\"required\";i:1;}');
 /*!40000 ALTER TABLE `yii_validates` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -347,7 +187,7 @@ CREATE TABLE `yii_value` (
   `fid` int(11) NOT NULL COMMENT '字段',
   `value` varchar(255) NOT NULL COMMENT '值',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -357,6 +197,167 @@ CREATE TABLE `yii_value` (
 LOCK TABLES `yii_value` WRITE;
 /*!40000 ALTER TABLE `yii_value` DISABLE KEYS */;
 /*!40000 ALTER TABLE `yii_value` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `yii_widgets`
+--
+
+DROP TABLE IF EXISTS `yii_widgets`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `yii_widgets` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `fid` int(11) NOT NULL,
+  `name` varchar(200) NOT NULL COMMENT 'widget名',
+  `text` text NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `yii_widgets`
+--
+
+LOCK TABLES `yii_widgets` WRITE;
+/*!40000 ALTER TABLE `yii_widgets` DISABLE KEYS */;
+/*!40000 ALTER TABLE `yii_widgets` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `zii_config_nid`
+--
+
+DROP TABLE IF EXISTS `zii_config_nid`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `zii_config_nid` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `display` tinyint(1) NOT NULL DEFAULT '1',
+  `sort` int(11) NOT NULL,
+  `created` int(11) NOT NULL,
+  `updated` int(11) NOT NULL,
+  `unique` varchar(200) NOT NULL,
+  `uid` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `zii_config_nid`
+--
+
+LOCK TABLES `zii_config_nid` WRITE;
+/*!40000 ALTER TABLE `zii_config_nid` DISABLE KEYS */;
+INSERT INTO `zii_config_nid` VALUES (1,1,0,1367055119,1367055474,'',0),(2,1,0,1367055510,1367055510,'',0);
+/*!40000 ALTER TABLE `zii_config_nid` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `zii_config_text`
+--
+
+DROP TABLE IF EXISTS `zii_config_text`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `zii_config_text` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `nid` int(11) NOT NULL,
+  `fid` int(11) NOT NULL,
+  `value` text NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `zii_config_text`
+--
+
+LOCK TABLES `zii_config_text` WRITE;
+/*!40000 ALTER TABLE `zii_config_text` DISABLE KEYS */;
+INSERT INTO `zii_config_text` VALUES (1,1,13,'adf'),(2,2,13,'test');
+/*!40000 ALTER TABLE `zii_config_text` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `zii_config_varchar`
+--
+
+DROP TABLE IF EXISTS `zii_config_varchar`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `zii_config_varchar` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `nid` int(11) NOT NULL,
+  `fid` int(11) NOT NULL,
+  `value` varchar(20) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `zii_config_varchar`
+--
+
+LOCK TABLES `zii_config_varchar` WRITE;
+/*!40000 ALTER TABLE `zii_config_varchar` DISABLE KEYS */;
+INSERT INTO `zii_config_varchar` VALUES (1,1,12,'adf'),(2,2,12,'tes');
+/*!40000 ALTER TABLE `zii_config_varchar` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `zii_module_nid`
+--
+
+DROP TABLE IF EXISTS `zii_module_nid`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `zii_module_nid` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `display` tinyint(1) NOT NULL DEFAULT '1',
+  `sort` int(11) NOT NULL,
+  `created` int(11) NOT NULL,
+  `updated` int(11) NOT NULL,
+  `unique` varchar(200) NOT NULL,
+  `uid` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `zii_module_nid`
+--
+
+LOCK TABLES `zii_module_nid` WRITE;
+/*!40000 ALTER TABLE `zii_module_nid` DISABLE KEYS */;
+INSERT INTO `zii_module_nid` VALUES (1,1,0,1367060093,1367061740,'',0),(2,2,0,1367060819,1367061907,'',0);
+/*!40000 ALTER TABLE `zii_module_nid` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `zii_module_varchar`
+--
+
+DROP TABLE IF EXISTS `zii_module_varchar`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `zii_module_varchar` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `nid` int(11) NOT NULL,
+  `fid` int(11) NOT NULL,
+  `value` varchar(50) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `zii_module_varchar`
+--
+
+LOCK TABLES `zii_module_varchar` WRITE;
+/*!40000 ALTER TABLE `zii_module_varchar` DISABLE KEYS */;
+INSERT INTO `zii_module_varchar` VALUES (1,1,14,'i18n'),(2,2,14,'mysql');
+/*!40000 ALTER TABLE `zii_module_varchar` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -368,4 +369,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2013-04-25 19:35:55
+-- Dump completed on 2013-04-27 20:05:47

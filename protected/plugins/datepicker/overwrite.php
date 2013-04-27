@@ -5,6 +5,7 @@ class overwrite_datepicker{
 		 return strtotime($value);
 	}
 	function after($value){ 
-		 return date('Y-m-d H:i',$value); 
+		 if($value)
+		 	return date('Y-m-d H:i',$value); 
 	}
 }

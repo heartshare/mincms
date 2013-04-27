@@ -13,7 +13,11 @@ $columns = array(
 	'fields'=>array(
 		'name'=>'fields',
 		'type'=>'raw'
-	) 
+	) ,
+	'display'=>array(
+		'name'=>'display_label',
+		'type'=>'raw'
+	) ,
 );
 $columns[] = array(
 	'class'=>'CButtonColumn',

@@ -83,7 +83,8 @@ $array = array(
 	// using Yii::app()->params['paramName']
 	'params'=>array(
 		// this is used in contact page
-		'debug'=>false,
+		'debug'=>true,
+		'hash'=>md5('mincms'),
 	),
 );
 $database = include_once dirname(__FILE__).'/database.php';		

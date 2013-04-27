@@ -56,7 +56,7 @@
         		<b class="caret"></b></a>
                 <ul class="dropdown-menu">
         		  <?php $content_type = StructGenerate::content_type();
-        			foreach($content_type as $v){?>
+        			foreach($content_type as $v){ if($v['display']!=1) continue;?>
                   <li><a href="<?php echo url('yii/grid/admin',array('name'=>$v['slug'])); ?>">
         			<?php echo t('admin',$v['name']); ?></a></li> 
                   <?php }?>
@@ -69,7 +69,18 @@
                 
                   <li class="divider"></li>
                   <li class="nav-header"><?php echo t('admin','Modules'); ?></li>
-                  <li><a href="<?php echo url('i18n/default/index'); ?>"><?php echo t('admin','I18N'); ?></a></li>
+                  <li><a href="<?php echo url('yii/modules/index'); ?>"><?php echo t('admin','Module Lists'); ?></a></li>
+                  <?php
+                  	 $nodes = find_all('zii_module'); 
+                  	if($nodes){
+				 		foreach($nodes as $node){ 
+				 			if($node->display==1){
+				  ?>
+				 	<li><a href="<?php echo url($node->slug.'/default/index'); ?>"><?php echo t('admin',$node->slug); ?></a></li>		 
+				 <?php	 }}} ?>
+                  
+                  
+                   
                    
                 </ul>
               </li>

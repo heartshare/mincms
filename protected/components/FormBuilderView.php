@@ -7,9 +7,22 @@ $form=$this->beginWidget('CActiveForm', array(
 <div class="<?php echo $id;?>"></div>
 
 <?php foreach($this->data as $field=>$value){?>
-	<?php $this->controller->widgets($value['widget'],array(
+	<?php 
+	/**
+	* 后台自动加载插件改变的值
+	*/
+	$plugins = $value['plugins'];
+	if($plugins){
+		foreach($plugins as $pk=>$pks){ 
+		 	$af = plugin_after($pk,$model->$field); 
+			if($af)
+				$new = $af; 
+		}
+	}	
+	$this->controller->widgets($value['widget'],array(
 		'label'=>$value['label'],
 		'name'=>$field,
+		'value'=>$new,
 		'form'=>$form,
 		'model'=>$model));?> 
 <?php }?>

@@ -83,6 +83,61 @@ class YiiFields extends ActiveRecord
 			'type'=>array(self::BELONGS_TO, 'YiiContent', 'cid'),
 		);
 	}
+	/**
+	*
+	* 保存字段信息
+	* 主要用于modules  data目录里面的生成的.json内容类型
+	*/
+	function save_struct($k,$li,$mid){  
+		$uk = '#name#';
+		unset($li->$uk);
+		$model_field = YiiFields::model()->findByAttributes(array(
+			'slug'=>$k,
+			'cid'=>$mid
+		)); 
+		$plugins = $li->plugins; 
+		$validates = $li->validates;
+		unset($li->plugins,
+			$li->validates,
+			$li->type,
+			$li->display,
+			$li->fid);
+	  
+		if(!$model_field){
+		 	$model = new YiiFields; 
+			foreach($li as $k=>$v){
+				$model->$k = $v;
+			}
+			$model->save();
+			$fid = $model->id;
+		}else{
+			$fid = $model_field->id;
+		}
+	  
+	 	
+	 	if($plugins){
+	 		$model_plugin = YiiPlugins::model()->findByAttributes(
+	 			array('fid'=>$fid)
+	 		);
+	 		if(!$model_plugin){
+	 			$model_plugin = new YiiPlugins;
+	 			$model_plugin->fid = $fid;
+	 			$model_plugin->value = $plugins;
+	 			$model_plugin->save();
+	 		}
+	 	}
+	 	if($validates){
+	 		$model_vali = YiiValidates::model()->findByAttributes(
+	 			array('fid'=>$fid)
+	 		);
+	 		if(!$model_vali){
+	 			$model_vali = new YiiValidates;
+	 			$model_vali->fid = $fid;
+	 			$model_vali->value = $plugins;
+	 			$model_vali->save();
+	 		}
+	 	} 
+	}
 	
 	
 
@@ -135,8 +190,39 @@ class YiiFields extends ActiveRecord
 	}
 	function afterSave(){
 		parent::afterSave(); 
-		StructGenerate::delete_cache();//�������
-		StructGenerate::delete_cache($this->type->slug);//������� 
+		$validate = $_POST['validate'];
+		$plugin = $_POST['plugin'];
+		
+		if(trim($validate)){
+			$validate = Spyc::YAMLLoadString($validate);
+			YiiValidates::model()->deleteAllByAttributes(array(
+				'fid'=>$this->id
+			));
+			$model = new YiiValidates;
+			$model->fid = $this->id;
+			$model->value = $validate;
+			$model->save(); 
+		}  else{
+			YiiValidates::model()->deleteAllByAttributes(array(
+				'fid'=>$this->id
+			));
+		}
+		if(trim($plugin)){
+			$plugin = Spyc::YAMLLoadString($plugin);
+			YiiPlugins::model()->deleteAllByAttributes(array(
+				'fid'=>$this->id
+			));
+			$model = new YiiPlugins;
+			$model->fid = $this->id;
+			$model->value = $plugin;
+			$model->save();  
+		}else{
+			YiiPlugins::model()->deleteAllByAttributes(array(
+				'fid'=>$this->id
+			));
+		}
+		StructGenerate::delete_cache();//清除缓存
+		StructGenerate::delete_cache($this->type->slug);//清除缓存 
 		return true;
 	}
 	function beforeSave(){
@@ -147,29 +233,7 @@ class YiiFields extends ActiveRecord
 		$this->search = trim($_POST['YiiFields']['search']);
 		$this->list = trim($_POST['YiiFields']['list']);
 		$this->length = trim($_POST['YiiFields']['length']);
-		$validate = $_POST['validate'];
-		$plugin = $_POST['plugin'];
-		if(trim($validate)){
-			$validate = Spyc::YAMLLoadString($validate);
-			YiiValidates::model()->deleteAllByAttributes(array(
-				'fid'=>$this->id
-			));
-			$model = new YiiValidates;
-			$model->fid = $this->id;
-			$model->value = serialize($validate);
-			$model->save();
-			 
-		}
-		if(trim($plugin)){
-			$plugin = Spyc::YAMLLoadString($plugin);
-			YiiPlugins::model()->deleteAllByAttributes(array(
-				'fid'=>$this->id
-			));
-			$model = new YiiPlugins;
-			$model->fid = $this->id;
-			$model->value = serialize($plugin);
-			$model->save();  
-		}
+		
 	 
 		return true;
 	}

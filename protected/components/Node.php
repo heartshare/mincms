@@ -9,6 +9,92 @@
  */
 class Node{
 	static $array_deep = 0;
+	/**
+	* 直接保存数据，无需FORM
+	*/
+	static function save_data($name,$data,$nid=null){
+		$model = new Model;
+		$data = (object)$data;
+		if(!$nid)
+			$nid = $data->id;
+		
+		if($nid){
+			$row = Node::load($name,$nid);
+	 		foreach($row as $k=>$v){
+	 			$model->$k=$v;
+	 		} 
+		}
+		$st = StructGenerate::tree($name); 
+		$rt = Node::set_rules($st);
+		$model->rules = $rt['rules'];
+		return Node::save($name,$model,$data,$nid,true);  
+	}
+	/**
+	 * 设置验证规则
+	 */
+	 function set_rules($data){
+	 	//set validate rules && plugins
+	 	$i=0;  
+		foreach($data as $field=>$value){
+			/**
+			* 对设置中的插件参数进行加载
+			*
+			*/
+			$plugins = $value['plugins'];
+			if($plugins){  
+				foreach($plugins as $pk=>$plugin){
+					/**
+					* TAG参数是常规参数，
+					* 如对应的是ID，则可以tag:id 或tag:#
+					* 如对应的是NAME,则可以tag:name 
+					*/
+					if($plugin['tag']){
+						if(in_array(strtolower($plugin['tag']),array('#','id'))){
+							$plugin['tag'] = '#'.$field;
+						}elseif(in_array(strtolower($plugin['tag']),array('name'))){
+							$plugin['tag'] = $field;
+						}
+					}
+					$out_plugins[$pk] = $plugin;
+					//加载插件
+					$this->controller->plugin($pk,$plugin);
+				}
+			}
+			/**
+			* 设置字段对应的验证规则，
+			* 至少有一个验证规则。
+			* 如果都没有验证规则，则无法显示表单。
+			* 因为数据库不需要保留全为空的值
+			*/
+			$attrs[] = $field;
+			$validates = $value['validates'];
+			if(!$validates) continue;
+			foreach($validates as $k=>$v){  
+				if(is_bool($v) || is_numeric($v) ){
+					$rules[$i] = array($field,$k);
+				}else if(is_array($v)){ 
+					$rules[$i][] = $field; 
+					$rules[$i][] = $k; 
+					foreach($v as $_k=>$_v){  
+						$rules[$i][$_k] = $_v;
+					} 
+				} 
+				$i++;
+			}
+		} 
+		/**
+		* 无规则直接报错
+		*/
+	 	if(!$rules){
+	 		exit(t('admin','No Validate Rules'));
+	 	} 
+		return array(
+			'rules'=>$rules,
+			'attrs'=>$attrs,
+			'plugins'=>$out_plugins,
+		);
+		
+	 }
 	static function find_all($name,$condition=null){
 	 	//使用mysql 分页
 	 	return DataBase::find_all($name,$condition);	 
@@ -79,14 +165,26 @@ class Node{
 		} 
  	 	return $data; 		
 	}
-	static function find($name,$condition){
+	static function find($name,$condition,$all=false){
 		//取得 content_type 指定name的所有信息
 		$structs = StructGenerate::tree($name);
  		$master = self::table_master($name);
 		if(is_numeric($condition)){  
 			return self::load($name,$condition); 
 		} else{
-			return DataBase::find_all($name,$condition); 
+			$rt = DataBase::find_all($name,$condition); 
+			if(true===$all){
+				if($rt){
+			 		foreach($rt as $n){
+			 			$node[] = find($name,$n['id']);  
+			 		}
+			 	}
+			 	$rt = $node;
+			}
+			if($condition['limit']==1){
+				 return $rt[0];
+			}
+			return $rt;
 		}
 	}
 	static function update($name,$array=array(),$nid){
@@ -102,11 +200,11 @@ class Node{
  	* @params $name content_type_name
  	* @params $model Model
  	* @params $attrs 属性
+ 	* @params $return 为true时返回nid
  	*/
- 	static function save($name,$model,$attrs,$node_id=null){ 
- 		
- 		foreach($attrs as $get){
- 			$model->$get = $_POST[$get];
+ 	static function save($name,$model,$attrs,$node_id=null,$return=false){  
+ 		foreach($attrs as $key=>$value){
+ 			$model->$key = $value;
  		}
  		$out = "##ajax-form-alert##:";
  		if(!$model->validate()){
@@ -117,6 +215,9 @@ class Node{
  					$out.= '<li>'.$r.'</li>';
  			}
  			$out.="</ul>"; 
+ 			if(true === $return){
+ 				return $out;
+ 			}
  			exit($out);
  		} 
  		before($model,$name);
@@ -127,8 +228,12 @@ class Node{
  		//主表 _nid 表，生成node 信息。向mysql中写源数据,返回主键值
  		if($node_id>0){ //如果node_id > 0说明是更新
  			$nid =  $node_id;
+ 		 	$display = 1;
+ 		 	if($model->display)
+ 				$display = $model->display;
  			DataBase::update($master,array( 
 	 			'updated'=>time(), 
+	 			'display'=>$display
 	 		),array(
 	 			'id=:id',
 	 			array( ':id'=>$node_id)
@@ -146,10 +251,12 @@ class Node{
  				$table = self::table_name($name,$options['mysql']);
  				//对插件的overwrite支持
  				$plugins = $options['plugins'];
- 				foreach($plugins as $pk=>$pks){ 
- 					$af = plugin_before($pk,$value);
-						if($af)
-							$value = $af;
+ 				if($plugins){
+	 				foreach($plugins as $pk=>$pks){ 
+	 					$af = plugin_before($pk,$value);
+							if($af)
+								$value = $af;
+	 				}
  				}
  				//向数据库中写源数据
  				$update = false;
@@ -183,6 +290,9 @@ class Node{
  		}
  		$out.= 1; 
 		self::delete_cache($name,$nid);
+		if(true === $return){
+			return $nid;
+		}
 		exit($out);  
  	}
  	/**

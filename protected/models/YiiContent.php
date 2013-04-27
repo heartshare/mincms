@@ -42,7 +42,7 @@ class YiiContent extends ActiveRecord
 	function check($name){
 		$ext = strtolower(substr($this->$name,0,4));
 		if(Yii::app()->params['debug']===true) return true;
-		if($ext=='yii_' || $ext=='core'){
+		if($ext=='yii_' || $ext=='zii_'){
 			$this->addError($name,Yii::t('admin','Content Type is not allow'));	
 		}
 	}
@@ -118,6 +118,7 @@ class YiiContent extends ActiveRecord
 		parent::beforeSave();
 		$this->name = trim($_POST['YiiContent']['name']);
 		$this->slug = strtolower(trim($_POST['YiiContent']['slug']));
+		$this->display = $_POST['YiiContent']['display'];
 		return true;
 	}
 	function afterSave(){
@@ -127,5 +128,16 @@ class YiiContent extends ActiveRecord
 	}
 	function getslug_hidden(){ 
 		return '<i class="drag"></i>'.CHtml::hiddenField('ids[]',$this->id).$this->slug;
+	}
+	function getdisplay_label(){
+		if($this->display==1){
+	 		$str =  "<img src='".base_url()."/misc/img/ok.png' />";
+	 	}else{
+	 		$str =  "<img src='".base_url()."/misc/img/error.png' />";
+	 		
+ 		}
+ 		if(substr($this->slug,0,4)=='zii_')
+ 			$str .="&nbsp;<a href='".url('yii/type/code',array('name'=>$this->slug))."'><i class='icon-qrcode'></i></a>"; 
+ 		return $str;
 	}
 }

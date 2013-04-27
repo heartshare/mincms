@@ -9,9 +9,59 @@
  */
 class StructGenerate{
 	/**
-	* @params $content_type_name yii_content(content type)名称
+	* 安装模块所需要的字段信息
+	* @params $name 模块名
 	*/
-	function table($content_type_name,$field){
+	static function module($name){ 
+		$path = base_path()."/modules/$name/data";
+		if(!is_dir($path)) return;
+		$list = scandir($path); 
+		foreach($list as $vo){   
+			if($vo !="."&& $vo !=".." && $vo !=".svn" )
+			{ 
+				$file[] = $vo;
+				$d = json_decode(file_get_contents($path.'/'.$vo)); 
+				//取得内容类型
+				$nk = "#name#";
+				$type = $d->$nk;
+				unset($type->id,$d->$nk);
+				$model = YiiContent::model()->findByAttributes(array(
+					'slug'=>$type->slug
+				));
+				$mid = $model->id; 
+				//保存内容类型到数据库
+				if(!$model){
+					$model = new YiiContent;
+					foreach($type as $ck=>$ck_value){
+						$model->$ck = $ck_value;
+					}
+					$model->save();
+					$mid = $model->id;
+				}
+				foreach($d as $k=>$li){
+					YiiFields::save_struct($k,$li,$mid,$type);
+				}
+				 
+			}
+		}
+		 
+	}
+	/**
+	* 生成内容类型的CODE
+	*/
+    static function code($name){
+    	$all = self::content_type(); 
+    	$tr = self::tree($name);
+    	//内容类型信息
+    	$tr['#name#'] = $all[$name];  
+    	$content = json_encode($tr);
+    	Yii::app()->request->sendFile($name.'.json',$content);
+    }
+	/**
+	* @params $content_type_name yii_content(content type)名称
+	*  INNODB  MYISAM
+	*/
+	static function table($content_type_name,$field){
 		$data = self::tree($content_type_name);  
 		$t_nid = $content_type_name."_nid";
 		$r = Yii::app()->db->createCommand('SHOW TABLES')->queryAll();
@@ -33,7 +83,7 @@ class StructGenerate{
 				  `unique` varchar(200) NOT NULL, 
 				  `uid` int(11) NOT NULL DEFAULT '0',	
 				  PRIMARY KEY (`id`)
-				) ENGINE=INNODB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+				) ENGINE=MYISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 	 		";
 	 		$table = Yii::app()->db->createCommand($sql)->query();
 	 		foreach($data as $key=>$v){
@@ -45,15 +95,20 @@ class StructGenerate{
 	}
 	/**
 	* 生成单个字段对应的表
+	* 无需单独使用该方法
+	* 在 table方法中被调用
 	*/
 	static function create_table($data,$content_type_name,$field){
 		$mysql = $data[$field]['mysql'];
+		$length = $data[$field]['length'];
 		if(!$mysql) return;
 		$type = $mysql;
+		
 		switch($mysql){
 			case 'varchar':
 				$len = 255;
 		}
+		if($length) $len = $length;
 		if($len) $type = $mysql."($len)";
 		$table = $content_type_name."_$mysql";
 		$sql = "
@@ -63,21 +118,30 @@ class StructGenerate{
 			  `fid` int(11) NOT NULL,
 			  `value` $type NOT NULL, 
 			  PRIMARY KEY (`id`)
-			) ENGINE=INNODB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+			) ENGINE=MYISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
  		";
  		Yii::app()->db->createCommand($sql)->query();
 	}
+	/**
+	* 生成内容类型列表缓存
+	*/
 	static function content_type(){
 		$cache_id = "yii_content_type";
 		$cache_data=Yii::app()->cache->get($cache_id);
 		if($cache_data===false)
 		{ 
 			$sql = 'SELECT 	*	FROM yii_content  ORDER BY sort desc,id asc '; 
-			$cache_data = Yii::app()->db->createCommand($sql)->queryAll();	 
+			$rows = Yii::app()->db->createCommand($sql)->queryAll();	 
+			foreach($rows as $vo){
+				$cache_data[$vo['slug']] = $vo;
+			}
 		 	Yii::app()->cache->set($cache_id,$cache_data);
 	 	}
 	 	return $cache_data;
 	}
+	/**
+	* 删除内容类型缓存
+	*/
 	static function delete_cache($content_name=null){
 		$cache_id = "yii_content_type_$content_name";
 		Yii::app()->cache->delete($cache_id);
@@ -85,7 +149,8 @@ class StructGenerate{
 		Yii::app()->cache->delete($cache_id); 
 	}
 	/**
-	* @params $content_name yii_content(content type)名称
+	* 内容类型对应的所有信息
+	* 包含字段，字段的所有配置，如验证规则 插件 对应的mysql字段类型
 	*/
 	static function tree($content_name=null){
 		$cache_id = "yii_content_type_$content_name";
@@ -95,10 +160,12 @@ class StructGenerate{
 			$sql = 'SELECT 
 			c.slug type_slug,
 			c.name type, 
+			c.display display,
 			f.slug slug,
 			f.name name,
 			f.id fid,
 			f.list list,
+			f.length length,
 			f.search search,
 			f.data_type mysql,
 			f.widget widget,
@@ -111,7 +178,7 @@ class StructGenerate{
 			ON f.id = p.fid
 			LEFT JOIN  yii_validates v
 			ON f.id = v.fid	
-			ORDER BY f.sort desc ,f.id desc
+			ORDER BY f.sort desc ,f.id asc
 			'; 
 			$rows = Yii::app()->db->createCommand($sql)->queryAll();	
 		 	foreach($rows as $row){  

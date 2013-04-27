@@ -1,5 +1,12 @@
 <?php
-
+/**
+ * NODE 的CURD
+ *
+ * @author Sun Kang <68103403@qq.com>
+ * @link http://www.mincms.com/
+ * @copyright 2013-2013 MinCMS Software
+ * @license http://www.mincms.com/license/
+ */
 class GridController extends YiiController
 {
 	public $layout='//layouts/column1';
@@ -39,41 +46,13 @@ class GridController extends YiiController
 	}
  	
 	function actionIndex($name,$id=null){ 
-		$builder = StructGenerate::FormBuilder($name);  
-		$this->render('form',array('name'=>$name,'id'=>$id,'builder'=>$builder));
+		 
+		$this->render('form',array('name'=>$name,'id'=>$id));
 	}
 	public function actionAdmin($name)
-	{ 
-		$t = StructGenerate::tree($name);
-	 
-		foreach($t as $k=>$v){
-			if($v['plugins']){
-				$p = $v['plugins'];
-				foreach($p as $pk=>$vo){
-					$plugins[$pk][] = $k;
-				}
-			}
-			if($v['search'])
-				$search[$k] = $v['widget'];
-			if($v['list'])
-				$list[$k] = $k;
-		}
-		 
-		/*$condition = array(
-			'where'=>array(
-				'or'=>array('title','like','%标题%'), 
-			),  
-		);*/
-		 
-	//	$condition['order'] = array('sort'=>'desc','id'=>'desc');
-		$rows = Node::pager($name,$condition);
+	{  
 		$this->render('admin',array( 
-		     'posts'=>$rows['posts'], 
-		     'pages'=>$rows['pages'], 
-		     'name'=>$name,
-		     'list'=>$list,
-		     'plugins'=>$plugins,
-		     'search'=>$search
+		     'name'=>$name,  
 		));
 	} 
 	 
