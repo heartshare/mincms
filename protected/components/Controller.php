@@ -45,7 +45,7 @@ class Controller extends CController
 		return $this->plugin($name,$params,'init','widgets');
 	}
 	/**
-	* Ç°¶ËÖØÓÃwidget
+	* å‰ç«¯é‡ç”¨widget
 	*/
 	function webcontrol($name,$params=null){
 		Yii::import("application.webcontrol.{$name}",true); 
